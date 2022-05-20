@@ -1,0 +1,84 @@
+{
+	"info": {
+		"_postman_id": "ec807a03-2988-443c-95c3-2e5732c6642b",
+		"name": "BY",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "SortProducts",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"productList\": [\n        {\n            \"productId\": \"Prod2\",\n            \"productName\": \"Trousers\",\n            \"unitOfMeasure\": \"EACH\",\n            \"launchDate\": \"2021-02-19\"\n        },\n        {\n            \"productId\": \"Prod1\",\n            \"productName\": \"Shirt\",\n            \"unitOfMeasure\": \"EACH\",\n            \"launchDate\": \"2021-02-21\"\n        },\n        {\n            \"productId\": \"Prod3\",\n            \"productName\": \"Tie\",\n            \"unitOfMeasure\": \"EACH\",\n            \"launchDate\": \"2021-02-22\"\n        },\n        {\n            \"productId\": \"Prod3\",\n            \"productName\": \"Tie\",\n            \"unitOfMeasure\": \"EACH\",\n            \"launchDate\": \"2021-02-24\"\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/sortProducts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"sortProducts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "HelloBY",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getProdAvailability",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"storeNo\":\"Store001\",\n    \"productId\":\"Prod1\",\n    \"reqQty\": \"2\",\n    \"reqDate\": \"2021-02-19\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/getProdAvailability",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"getProdAvailability"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
