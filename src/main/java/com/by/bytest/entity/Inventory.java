@@ -16,6 +16,10 @@ public class Inventory {
 	private String UOM;
 	private Date availDate;
 	private Double availQty;
+	
+	public Inventory() {
+		super();
+	}
 	public Inventory(String productid, String productName, String uOM, Double availQty,Date availDate) {
 		super();
 		this.productid = productid;

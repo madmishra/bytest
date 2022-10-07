@@ -75,8 +75,9 @@ public class ByServiceImpl implements ByService {
 
 	
 	@Override
-	public ATPResponse getProdAvailability(ATPRequest atpReq) throws ParseException {
+	public ATPResponse getProdAvailability(ATPRequest atpReq) throws Exception {
 		String productId=atpReq.getProductId();
+		
 		String reqDateString=atpReq.getReqDate();
 		
 		Date reqFromDate = new SimpleDateFormat("yyyy-MM-dd").parse(reqDateString);
@@ -87,7 +88,6 @@ public class ByServiceImpl implements ByService {
 		String sReqToDate = new SimpleDateFormat("yyyy-MM-dd").format(c.getTime()); 
 		Date reqToDate = new SimpleDateFormat("yyyy-MM-dd").parse(sReqToDate);
 		List<Inventory> inventories = availRepo.findByProductidAndAvailDateGreaterThanAndAvailDateLessThan(productId, reqFromDate, reqToDate);
-
 		Double dSumQty = 0.0;
 		if(inventories!=null) {
 			for (Inventory i:inventories) {
@@ -99,8 +99,9 @@ public class ByServiceImpl implements ByService {
 		return atpResponse;
 	}
 
-	private void validateDate(Date reqFromDate) throws ParseException {
-		Date currentDate = new Date();
+	private void validateDate(Date reqFromDate) throws Exception {
+		Date currentDate = new SimpleDateFormat("yyyy-MM-dd").parse("2021-03-19");
+		
 		Calendar c = Calendar.getInstance();
 		c.setTime(currentDate);
 		c.add(Calendar.DAY_OF_MONTH, 10);
@@ -111,7 +112,7 @@ public class ByServiceImpl implements ByService {
 		String sMinusTen = new SimpleDateFormat("yyyy-MM-dd").format(c.getTime()); 
 		Date MinusTen = new SimpleDateFormat("yyyy-MM-dd").parse(sMinusTen);
 		if(reqFromDate.before(MinusTen)||reqFromDate.after(PlusTen)){
-			throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Please Enter a date within 10 days from now.");
+			throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "Please Enter a date within 10 days from now.");
 		}
 		
 	}

@@ -11,7 +11,7 @@ import com.by.bytest.pojo.StoreCalendarResponse;
 public interface ByService {
 	ProductList getProductList(int pageNo, int pageSize, String sortBy, String sortDir);
 	ProductList sortProductList(ProductList productList);
-	ATPResponse getProdAvailability(ATPRequest atpReq) throws ParseException;
+	ATPResponse getProdAvailability(ATPRequest atpReq) throws Exception;
 	StoreCalendarResponse findStoreAvailability(StoreCalendarRequest storeCalReq) throws ParseException;
 
 }

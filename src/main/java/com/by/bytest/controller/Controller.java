@@ -57,14 +57,14 @@ public class Controller {
     	
         return service.sortProductList(products);
     }
-    
+    @RequestMapping(value = "/getInvPicture", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @PostMapping(value = "/getInvPicture")
-    public  @ResponseBody ATPResponse getProdAvailability(@RequestBody ATPRequest atpReq) throws ParseException {
+    public  @ResponseBody ATPResponse getProdAvailability(@RequestBody ATPRequest atpReq) throws Exception {
     	
         //return service.getProdAvailability_noExecutor(atpReq);
         return service.getProdAvailability(atpReq);
     }
-    
+    @RequestMapping(value = "/findStoreAvailability", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @PostMapping(value = "/findStoreAvailability")
     public  @ResponseBody StoreCalendarResponse findStoreAvailability(@RequestBody StoreCalendarRequest storeCalReq) throws ParseException {
     	
