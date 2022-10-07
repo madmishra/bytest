@@ -10,6 +10,6 @@ import com.by.bytest.entity.Inventory;
 @Repository
 public interface AvailabilityRepository extends CrudRepository<Inventory, Integer>{
 	List<Inventory> findByProductidAndAvailDateBetween(String ProdId,Date start,Date end);
-	List<Inventory> findByProductidAndAvailDateGreaterThanAndAvailDateLessThan(String ProdId,Date start,Date end);
+	List<Inventory> findByProductidAndAvailDateGreaterThanEqualAndAvailDateLessThan(String ProdId,Date start,Date end);
 
 }

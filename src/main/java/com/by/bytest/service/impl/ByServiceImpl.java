@@ -87,7 +87,7 @@ public class ByServiceImpl implements ByService {
 		c.add(Calendar.DAY_OF_MONTH, 10);
 		String sReqToDate = new SimpleDateFormat("yyyy-MM-dd").format(c.getTime()); 
 		Date reqToDate = new SimpleDateFormat("yyyy-MM-dd").parse(sReqToDate);
-		List<Inventory> inventories = availRepo.findByProductidAndAvailDateGreaterThanAndAvailDateLessThan(productId, reqFromDate, reqToDate);
+		List<Inventory> inventories = availRepo.findByProductidAndAvailDateGreaterThanEqualAndAvailDateLessThan(productId, reqFromDate, reqToDate);
 		Double dSumQty = 0.0;
 		if(inventories!=null) {
 			for (Inventory i:inventories) {
