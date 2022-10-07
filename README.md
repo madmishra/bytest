@@ -6,4 +6,5 @@ steps to execute :-
 4. upload the postman collection BY.postman_collection.json into postman, 
 5. Execute the following post requests from postman 
     - SortProducts
-    - getProdAvailibility
+    - getInvPicture
+	- findStoreAvailability
