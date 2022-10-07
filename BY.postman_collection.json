@@ -2,7 +2,8 @@
 	"info": {
 		"_postman_id": "ec807a03-2988-443c-95c3-2e5732c6642b",
 		"name": "BY",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13603216"
 	},
 	"item": [
 		{
@@ -53,13 +54,13 @@
 			"response": []
 		},
 		{
-			"name": "getProdAvailability",
+			"name": "getInvPicture",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"storeNo\":\"Store001\",\n    \"productId\":\"Prod1\",\n    \"reqQty\": \"2\",\n    \"reqDate\": \"2021-02-19\"\n}",
+					"raw": "{\n    \"productId\":\"Prod1\",\n    \"prodName\":\"Shirt\",\n    \"reqDate\": \"2021-03-19\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -67,14 +68,42 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/getProdAvailability",
+					"raw": "http://localhost:8080/getInvPicture",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"getProdAvailability"
+						"getInvPicture"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findStoreAvailability",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"storeID\":\"STORE001\",\n    \"requestDate\":\"2021-10-26T08:49:48.616Z\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/findStoreAvailability",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"findStoreAvailability"
 					]
 				}
 			},
