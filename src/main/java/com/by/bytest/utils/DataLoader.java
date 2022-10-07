@@ -7,33 +7,25 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Component;
 
-import com.by.bytest.entity.Availability;
-import com.by.bytest.entity.Capacity;
+import com.by.bytest.entity.Inventory;
 import com.by.bytest.entity.StoreCalendar;
 import com.by.bytest.repos.AvailabilityRepository;
 import com.by.bytest.repos.CalendarRepository;
-import com.by.bytest.repos.CapacityRepository;
 @Component
 public class DataLoader {
 	private AvailabilityRepository ar;
-	private CapacityRepository cr;
 	private CalendarRepository calrepo;
 
-	public DataLoader(AvailabilityRepository availRepo,CapacityRepository capRepo, CalendarRepository calRepo) {
+	public DataLoader(AvailabilityRepository availRepo, CalendarRepository calRepo) {
 		this.ar = availRepo;
-		this.cr = capRepo;
 		this.calrepo=calRepo;
 	}
 	
 	@PostConstruct
 	public void run() throws Exception {
-		ar.save(new Availability("Store001", "Prod1", new SimpleDateFormat("yyyy-MM-dd").parse("2021-02-19"), 1.0));
-		ar.save(new Availability("Store001", "Prod1", new SimpleDateFormat("yyyy-MM-dd").parse("2021-02-20"), 3.0));
-		ar.save(new Availability("Store001", "Prod1", new SimpleDateFormat("yyyy-MM-dd").parse("2021-02-21"), 0.0));
-		cr.save(new Capacity("Store001",  new SimpleDateFormat("yyyy-MM-dd").parse("2021-02-19"), 0.0));
-		cr.save(new Capacity("Store001",  new SimpleDateFormat("yyyy-MM-dd").parse("2021-02-20"), 2.0));
-		cr.save(new Capacity("Store001",  new SimpleDateFormat("yyyy-MM-dd").parse("2021-02-21"), 2.0));
-		cr.save(new Capacity("Store001",  new SimpleDateFormat("yyyy-MM-dd").parse("2021-02-21"), 2.0));
+		ar.save(new Inventory("Prod1","Shirt","EACH", 10.0, new SimpleDateFormat("yyyy-MM-dd").parse("2021-03-19")));
+		ar.save(new Inventory("Prod1","Shirt","EACH", 20.0, new SimpleDateFormat("yyyy-MM-dd").parse("2021-03-21")));
+		ar.save(new Inventory("Prod1","Shirt","EACH", 20.0, new SimpleDateFormat("yyyy-MM-dd").parse("2021-03-28")));
 		calrepo.save(new StoreCalendar("STORE001", "SUNDAY", LocalTime.parse("13:30")));
 		calrepo.save(new StoreCalendar("STORE001", "MONDAY", LocalTime.parse("13:30")));
 		calrepo.save(new StoreCalendar("STORE001", "TUESDAY", LocalTime.parse("13:30")));

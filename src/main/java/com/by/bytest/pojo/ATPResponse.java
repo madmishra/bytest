@@ -2,32 +2,14 @@ package com.by.bytest.pojo;
 import java.util.Date;
 
 public class ATPResponse {
-	String storeNo;
 	String productId;
-	String reqQty;
-	String reqDate;
-	String status;
-	public ATPResponse(String storeNo,String productId,String reqQty,String reqDate,String status) {
-		this.storeNo = storeNo;
+	String prodName;
+	String availQty;
+	public ATPResponse(String productId, String prodName, String availQty) {
+		super();
 		this.productId = productId;
-		this.reqQty = reqQty;
-		this.reqDate = reqDate;
-		this.status = status;
-	}
-	public ATPResponse() {
-		// TODO Auto-generated constructor stub
-	}
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
-	}
-	public String getStoreNo() {
-		return storeNo;
-	}
-	public void setStoreNo(String storeNo) {
-		this.storeNo = storeNo;
+		this.prodName = prodName;
+		this.availQty = availQty;
 	}
 	public String getProductId() {
 		return productId;
@@ -35,17 +17,17 @@ public class ATPResponse {
 	public void setProductId(String productId) {
 		this.productId = productId;
 	}
-	public String getReqQty() {
-		return reqQty;
+	public String getProdName() {
+		return prodName;
 	}
-	public void setReqQty(String reqQty) {
-		this.reqQty = reqQty;
+	public void setProdName(String prodName) {
+		this.prodName = prodName;
 	}
-	public String getReqDate() {
-		return reqDate;
+	public String getAvailQty() {
+		return availQty;
 	}
-	public void setReqDate(String reqDate) {
-		this.reqDate = reqDate;
+	public void setAvailQty(String availQty) {
+		this.availQty = availQty;
 	}
 	
 }

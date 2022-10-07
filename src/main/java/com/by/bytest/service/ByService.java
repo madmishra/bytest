@@ -12,7 +12,6 @@ public interface ByService {
 	ProductList getProductList(int pageNo, int pageSize, String sortBy, String sortDir);
 	ProductList sortProductList(ProductList productList);
 	ATPResponse getProdAvailability(ATPRequest atpReq) throws ParseException;
-	ATPResponse getProdAvailability_noExecutor(ATPRequest atpReq) throws ParseException;
 	StoreCalendarResponse findStoreAvailability(StoreCalendarRequest storeCalReq) throws ParseException;
 
 }

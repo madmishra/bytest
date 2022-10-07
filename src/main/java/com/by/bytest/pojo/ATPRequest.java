@@ -1,29 +1,21 @@
 package com.by.bytest.pojo;
 
-import java.util.Date;
-
 public class ATPRequest {
-	String storeNo;
+
 	String productId;
-	String reqQty;
+	String prodName;
 	String reqDate;
-	public String getStoreNo() {
-		return storeNo;
-	}
-	public void setStoreNo(String storeNo) {
-		this.storeNo = storeNo;
-	}
 	public String getProductId() {
 		return productId;
 	}
 	public void setProductId(String productId) {
 		this.productId = productId;
 	}
-	public String getReqQty() {
-		return reqQty;
+	public String getProdName() {
+		return prodName;
 	}
-	public void setReqQty(String reqQty) {
-		this.reqQty = reqQty;
+	public void setProdName(String prodName) {
+		this.prodName = prodName;
 	}
 	public String getReqDate() {
 		return reqDate;

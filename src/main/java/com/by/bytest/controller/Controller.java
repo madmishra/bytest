@@ -58,7 +58,7 @@ public class Controller {
         return service.sortProductList(products);
     }
     
-    @PostMapping(value = "/getProdAvailability")
+    @PostMapping(value = "/getInvPicture")
     public  @ResponseBody ATPResponse getProdAvailability(@RequestBody ATPRequest atpReq) throws ParseException {
     	
         //return service.getProdAvailability_noExecutor(atpReq);

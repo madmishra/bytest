@@ -3,19 +3,15 @@ package com.by.bytest.service.impl;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.by.bytest.entity.Availability;
-import com.by.bytest.entity.Capacity;
+import com.by.bytest.entity.Inventory;
 import com.by.bytest.entity.StoreCalendar;
 import com.by.bytest.pojo.ATPRequest;
 import com.by.bytest.pojo.ATPResponse;
@@ -37,14 +32,11 @@ import com.by.bytest.pojo.StoreCalendarRequest;
 import com.by.bytest.pojo.StoreCalendarResponse;
 import com.by.bytest.repos.AvailabilityRepository;
 import com.by.bytest.repos.CalendarRepository;
-import com.by.bytest.repos.CapacityRepository;
 import com.by.bytest.service.ByService;
 @Service
 public class ByServiceImpl implements ByService {
 	@Autowired
 	AvailabilityRepository availRepo;
-	@Autowired
-	CapacityRepository capRepo;
 	@Autowired
 	CalendarRepository calRepo;
 	@Override
@@ -80,58 +72,48 @@ public class ByServiceImpl implements ByService {
 		return sortedProductList;
 	}
 
-	@Override
-	public ATPResponse getProdAvailability_noExecutor(ATPRequest atpReq) throws ParseException {
-		
-		String storeNo=atpReq.getStoreNo();
-		String productId=atpReq.getProductId();
-		String reqDateString=atpReq.getReqDate();
-		String reqQty = atpReq.getReqQty();
-		
-		Date reqDate = new SimpleDateFormat("yyyy-MM-dd").parse(reqDateString);
-		
-		Optional<Availability> optAvail =  availRepo.findByStoreNoAndProductIdAndDateAndAvailQtyGreaterThan(storeNo, productId ,reqDate , 0.0);
-		Optional<Capacity> optCap =  capRepo.findByStoreNoAndDateAndNoOfOrdersAcceptedGreaterThan(storeNo, reqDate, 0.0);
-		return generateResponse(atpReq, optAvail, optCap);
-	}
 
-	private ATPResponse generateResponse(ATPRequest atpReq, Optional<Availability> optAvail,
-			Optional<Capacity> optCap) {
-		ATPResponse atpResponse = null;
-		if(optAvail.isPresent()) {
-			if(optCap.isPresent()) {
-				atpResponse = new ATPResponse(atpReq.getStoreNo(),atpReq.getProductId(), atpReq.getReqQty(), atpReq.getReqDate(), "Available");
-			}else {
-				atpResponse = new ATPResponse(atpReq.getStoreNo(),atpReq.getProductId(), atpReq.getReqQty(), atpReq.getReqDate(), "No Capacity");
-			}
-		}else {
-			throw new ResponseStatusException(HttpStatus.NO_CONTENT, "no content to be returned.");
-		}
 	
-		
-		return atpResponse;
-	}
 	@Override
 	public ATPResponse getProdAvailability(ATPRequest atpReq) throws ParseException {
-		String storeNo=atpReq.getStoreNo();
 		String productId=atpReq.getProductId();
 		String reqDateString=atpReq.getReqDate();
-		String reqQty = atpReq.getReqQty();
 		
-		Date reqDate = new SimpleDateFormat("yyyy-MM-dd").parse(reqDateString);
-		ExecutorService execService = Executors.newFixedThreadPool(2);
-		Future<Optional<Availability>> futureAvail = execService.submit(()->{return availRepo.findByStoreNoAndProductIdAndDateAndAvailQtyGreaterThan(storeNo, productId ,reqDate , 0.0);});
-		Future<Optional<Capacity>> futureCapacity = execService.submit(()->{return capRepo.findByStoreNoAndDateAndNoOfOrdersAcceptedGreaterThan(storeNo, reqDate, 0.0);});
-		ATPResponse atpResponse = null;
-		try {
-			Optional<Availability> optAvail = futureAvail.get();
-			Optional<Capacity> optCap = futureCapacity.get();
-			atpResponse = generateResponse(atpReq, optAvail, optCap);
-		} catch (InterruptedException | ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		Date reqFromDate = new SimpleDateFormat("yyyy-MM-dd").parse(reqDateString);
+		validateDate(reqFromDate);
+		Calendar c = Calendar.getInstance();
+		c.setTime(reqFromDate);
+		c.add(Calendar.DAY_OF_MONTH, 10);
+		String sReqToDate = new SimpleDateFormat("yyyy-MM-dd").format(c.getTime()); 
+		Date reqToDate = new SimpleDateFormat("yyyy-MM-dd").parse(sReqToDate);
+		List<Inventory> inventories = availRepo.findByProductidAndAvailDateGreaterThanAndAvailDateLessThan(productId, reqFromDate, reqToDate);
+
+		Double dSumQty = 0.0;
+		if(inventories!=null) {
+			for (Inventory i:inventories) {
+				dSumQty+=i.getAvailQty();
+			}
 		}
+		
+		ATPResponse atpResponse = new ATPResponse(productId, atpReq.getProdName(), String.valueOf(dSumQty));
 		return atpResponse;
+	}
+
+	private void validateDate(Date reqFromDate) throws ParseException {
+		Date currentDate = new Date();
+		Calendar c = Calendar.getInstance();
+		c.setTime(currentDate);
+		c.add(Calendar.DAY_OF_MONTH, 10);
+		String sPlusTen = new SimpleDateFormat("yyyy-MM-dd").format(c.getTime()); 
+		Date PlusTen = new SimpleDateFormat("yyyy-MM-dd").parse(sPlusTen);
+		c.setTime(currentDate);
+		c.add(Calendar.DAY_OF_MONTH, -10);
+		String sMinusTen = new SimpleDateFormat("yyyy-MM-dd").format(c.getTime()); 
+		Date MinusTen = new SimpleDateFormat("yyyy-MM-dd").parse(sMinusTen);
+		if(reqFromDate.before(MinusTen)||reqFromDate.after(PlusTen)){
+			throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Please Enter a date within 10 days from now.");
+		}
+		
 	}
 
 	@Override
