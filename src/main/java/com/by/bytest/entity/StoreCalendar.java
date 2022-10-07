@@ -16,6 +16,9 @@ public class StoreCalendar {
 	private String day;
 	private LocalTime cutOffTime;
 	
+	public StoreCalendar() {
+		super();
+	}
 	public StoreCalendar(String locationID, String day, LocalTime cutOffTime) {
 		super();
 		this.locationID = locationID;

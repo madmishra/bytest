@@ -125,11 +125,11 @@ public class ByServiceImpl implements ByService {
 		String date = storeCalReq.getRequestDate();
 		response = new StoreCalendarResponse(storeNo,date,"Not Available");
 		Instant requestedDateTime = Instant.parse(date);
+		LocalTime requestedTime =requestedDateTime.atZone(ZoneId.of("UTC")).toLocalTime();
 		String sDOW = requestedDateTime.atZone(ZoneId.of("UTC")).getDayOfWeek().name();
 		//String sDay = DayOfWeek.of(requestedDateTime.atZone(ZoneId.of("UTC")).getDayOfWeek().getValue());
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+		//DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
-		LocalTime requestedTime = LocalTime.parse(formatter.format(requestedDateTime));
 		Optional<StoreCalendar> optCal =calRepo.findByLocationIDAndDayAndCutOffTimeGreaterThan(storeNo,sDOW, requestedTime);
 		if(optCal.isPresent()) {
 			response.setStatus("Available");
